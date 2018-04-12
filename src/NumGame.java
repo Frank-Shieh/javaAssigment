@@ -21,7 +21,7 @@ public class NumGame {
 		this.setPlayerB(playerB);
 	}
 
-	public void startGame() {
+	public int startGame() {
 		// initial step
 		System.out.println("Welcome to Nim\n");
 		Scanner scanner = new Scanner(System.in);
@@ -61,8 +61,10 @@ public class NumGame {
 		System.out.printf("Game Over\n");
 		if (this.numberOfStones == 0 && this.winner == null) {
 			System.out.println(playerA.getGivenName() + " " + playerB.getFamilyName() + " wins!\n");
+			return 1;
 		} else {
 			System.out.println(this.winner + " wins!\n");
+			return 2;
 		}
 
 	}
@@ -79,10 +81,10 @@ public class NumGame {
 	// determine the valid number to remove
 	public int judgeRemoveNumber(int numberToRemove) {
 		if (numberToRemove <= upperBound && numberToRemove > 0 && numberToRemove <= numberOfStones) {
-			numberOfStones = numberOfStones - numberToRemove;
-			if (numberOfStones > 0) {
-				printStones(numberOfStones);
-			}
+//			numberOfStones = numberOfStones - numberToRemove;
+//			if (numberOfStones > 0) {
+//				printStones(numberOfStones);
+//			}
 			return 1;
 		} else {
 			System.out.println("Invalid move. You must remove between 1 and " + this.upperBound + " stones.\n");

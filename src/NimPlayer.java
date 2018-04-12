@@ -17,7 +17,7 @@ public class NimPlayer {
 		this.givenName = givenName;
 		this.familyName = familyName;
 		this.numberOfPlayed = 0;
-		this.numberOfWon = 1;
+		this.numberOfWon = 0;
 	}
 
 	/**
