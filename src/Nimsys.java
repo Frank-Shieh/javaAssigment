@@ -10,7 +10,6 @@ import java.util.Scanner;
 
 /**
  * @author ZIYANG XIE StudentID 870523 9 Apr. 2018-5:14:53 pm
- * @param <T>
  */
 public class Nimsys {
 
@@ -26,62 +25,59 @@ public class Nimsys {
 		int flag = 1;
 		Scanner scanner = new Scanner(System.in);
 		Nimsys nimsys = new Nimsys();
-		System.out.println("Welcome to Nim/n");
+		System.out.println("Welcome to Nim");
 		printDollar();
 		while (flag == 1) {
 			String command = scanner.next();
 			flag = nimsys.determineCommand(scanner, command);
 		}
-
+		System.out.println();
 	}
 
 	public int determineCommand(Scanner scanner, String command) {
 		if (command.equals("addplayer")) {
-			if (scanner.hasNext()) {
-				String parameter = scanner.next();
-				String[] parameters = parameter.split(",");
-				addPlayer(parameters[0], parameters[1], parameters[2]);
-			}
+			String parameter = scanner.next();
+			String[] parameters = parameter.split(",");
+			addPlayer(parameters[0], parameters[1], parameters[2]);
 		} else if (command.equals("removeplayer")) {
-			if (scanner.hasNext()) {
-				String parameter = scanner.next();
-				removePlayer(scanner, parameter);
-			} else
-				removePlayer(null, null);
-		} else if (command.equals("editplayer")) {
-			if (scanner.hasNext()) {
-				String parameter = scanner.next();
-				String[] parameters = parameter.split(",");
-				editPlayer(parameters[0], parameters[1], parameters[2]);
-			}
-		} else if (command.equals("resetstats")) {
-			if (scanner.hasNext()) {
-				String parameter = scanner.next();
-				resetStats(scanner, parameter);
+			String parameter = scanner.nextLine();
+			if (!parameter.equals("")) {
+				removePlayer(scanner, parameter.trim());
 			} else {
-				resetStats(null, null);
+				removePlayer(scanner, null);
+			}
+		} else if (command.equals("editplayer")) {
+			String parameter = scanner.next();
+			String[] parameters = parameter.split(",");
+			editPlayer(parameters[0], parameters[1], parameters[2]);
+		} else if (command.equals("resetstats")) {
+			String parameter = scanner.nextLine();
+			if (!parameter.equals("")) {
+				resetStats(scanner, parameter.trim());
+			} else {
+				resetStats(scanner, null);
 			}
 		} else if (command.equals("displayplayer")) {
-			if (scanner.hasNext()) {
-				String parameter = scanner.next();
-				displayPlayer(scanner, parameter);
+			String parameter = scanner.nextLine();
+			if (!parameter.equals("")) {
+				displayPlayer(scanner, parameter.trim());
 			} else {
-				displayPlayer(null, null);
+				displayPlayer(scanner, null);
 			}
 		} else if (command.equals("rankings")) {
-			if (scanner.hasNext()) {
-				String parameter = scanner.next();
-				rankings(parameter);
+			String parameter = scanner.nextLine();
+			if (!parameter.equals("")) {
+				rankings(parameter.trim());
 			} else {
 				rankings(null);
 			}
 		} else if (command.equals("startgame")) {
-			if (scanner.hasNext()) {
-				String parameter = scanner.next();
-				String[] parameters = parameter.split(",");
-				startGame(Integer.parseInt(parameters[0]), Integer.parseInt(parameters[1]), parameters[2],
-						parameters[3]);
-			}
+			String parameter = scanner.next();
+			String[] parameters = parameter.split(",");
+			startGame(scanner, Integer.parseInt(parameters[0]), Integer.parseInt(parameters[1]), parameters[2],
+					parameters[3]);
+		} else if (command.equals("exit")) {
+			return 0;
 		}
 		printDollar();
 		return 1;
@@ -91,7 +87,7 @@ public class Nimsys {
 		System.out.print("\n$");
 	}
 
-	public void addPlayer(String userName, String givenName, String familyName) {
+	public void addPlayer(String userName, String familyName, String givenName) {
 		int flag = 0;
 		// check the same userName in the array
 		for (int i = 0; i < users.size(); i++) {
@@ -108,12 +104,13 @@ public class Nimsys {
 	}
 
 	public void removePlayer(Scanner scanner, String userName) {
-		if (userName.equals(null)) {
+		if (userName == null) {
 			System.out.println("Are you sure you want to remove all players? (y/n)");
 			String flag = scanner.next();
 			if (flag.equals("y")) {
 				users.clear();
 			}
+
 		} else {
 			int flag = 1;
 			// check the same userName in the array
@@ -130,7 +127,7 @@ public class Nimsys {
 
 	}
 
-	public void editPlayer(String userName, String givenName, String familyName) {
+	public void editPlayer(String userName, String familyName, String givenName) {
 		int flag = 0;
 		int i = 0;
 		// check the same userName in the array
@@ -180,7 +177,15 @@ public class Nimsys {
 	}
 
 	public void displayPlayer(Scanner scanner, String userName) {
-		if (userName.equals(null)) {
+		if (userName == null) {
+			Comparator<NimPlayer> nameComparator = new Comparator<NimPlayer>() {
+				@Override
+				public int compare(NimPlayer o1, NimPlayer o2) {
+					// TODO Auto-generated method stub
+					return o1.getUserName().compareToIgnoreCase(o2.getUserName());
+				}
+			};
+			Collections.sort(users, nameComparator);
 			for (int i = 0; i < users.size(); i++) {
 				System.out.println(users.get(i).getUserName() + "," + users.get(i).getGivenName() + ","
 						+ users.get(i).getFamilyName() + "," + users.get(i).getNumberOfPlayed() + " games,"
@@ -206,7 +211,7 @@ public class Nimsys {
 	}
 
 	public void rankings(String parameter) {
-		Comparator<NimPlayer> ascComparator = new Comparator<NimPlayer>() {
+		Comparator<NimPlayer> descComparator = new Comparator<NimPlayer>() {
 			@Override
 			public int compare(NimPlayer o1, NimPlayer o2) {
 				// TODO Auto-generated method stub
@@ -214,25 +219,26 @@ public class Nimsys {
 					// arrange won percentage first
 					if ((o1.getNumberOfWon() / o1.getNumberOfPlayed()) != (o2.getNumberOfWon()
 							/ o2.getNumberOfPlayed())) {
-						return o1.getNumberOfWon() / o1.getNumberOfPlayed()
-								- o2.getNumberOfWon() / o2.getNumberOfPlayed();
+						return o2.getNumberOfWon() / o2.getNumberOfPlayed()
+								- o1.getNumberOfWon() / o1.getNumberOfPlayed();
 					} else {
 						// arrange userName if the won percentages are the same.
-						return o1.getUserName().compareTo(o2.getUserName());
+						return o1.getUserName().compareToIgnoreCase(o2.getUserName());
 					}
+				} else if (o1.getNumberOfPlayed() != o2.getNumberOfPlayed()) {
+					// arrange user who never play games and the user who played games before
+					return o2.getNumberOfPlayed() - o1.getNumberOfPlayed();
 				} else {
-					// arrange userName if the users never play games.
-					return o1.getUserName().compareTo(o2.getUserName());
+					// arrange userName if users never played games before
+					return o1.getUserName().compareToIgnoreCase(o2.getUserName());
 				}
-
 			}
-
 		};
-		if (parameter.equals("asc")) {
-			Collections.sort(users, ascComparator);
+		if (parameter == null || parameter.equals("desc")) {
+			Collections.sort(users, descComparator);
 			printRankings(users, parameter);
-		} else if (parameter.equals(null) || parameter.equals("desc")) {
-			Comparator<NimPlayer> descComparator = new Comparator<NimPlayer>() {
+		} else if (parameter.equals("asc")) {
+			Comparator<NimPlayer> ascComparator = new Comparator<NimPlayer>() {
 				@Override
 				public int compare(NimPlayer o1, NimPlayer o2) {
 					// TODO Auto-generated method stub
@@ -240,21 +246,24 @@ public class Nimsys {
 						// arrange won percentage first
 						if ((o1.getNumberOfWon() / o1.getNumberOfPlayed()) != (o2.getNumberOfWon()
 								/ o2.getNumberOfPlayed())) {
-							return o2.getNumberOfWon() / o2.getNumberOfPlayed()
-									- o1.getNumberOfWon() / o1.getNumberOfPlayed();
+							return o1.getNumberOfWon() / o1.getNumberOfPlayed()
+									- o2.getNumberOfWon() / o2.getNumberOfPlayed();
 						} else {
 							// arrange userName if the won percentages are the same.
-							return o1.getUserName().compareTo(o2.getUserName());
+							return o1.getUserName().compareToIgnoreCase(o2.getUserName());
 						}
+					} else if (o1.getNumberOfPlayed() != o2.getNumberOfPlayed()) {
+						// arrange user who never play games and the user who played games before
+						return o1.getNumberOfPlayed() - o2.getNumberOfPlayed();
 					} else {
-						// arrange userName if the users never play games.
-						return o1.getUserName().compareTo(o2.getUserName());
+						// arrange userName if users never played games before
+						return o1.getUserName().compareToIgnoreCase(o2.getUserName());
 					}
 
 				}
 
 			};
-			Collections.sort(users, descComparator);
+			Collections.sort(users, ascComparator);
 			printRankings(users, parameter);
 		}
 	}
@@ -267,13 +276,12 @@ public class Nimsys {
 			}
 			String result = Integer.parseInt(new DecimalFormat("0").format(wonPercentage * 100)) + "%";
 			System.out.printf("%-5s" + "| ", result);
-			System.out.printf("%d" + " games | ",
-					Integer.parseInt(new DecimalFormat("00").format(users.get(i).getNumberOfPlayed())));
+			System.out.printf("%02d" + " games | ", users.get(i).getNumberOfPlayed());
 			System.out.println(users.get(i).getGivenName() + " " + users.get(i).getFamilyName());
 		}
 	}
 
-	public void startGame(int initialNumber, int upperBound, String userNameA, String userNameB) {
+	public void startGame(Scanner scanner, int initialNumber, int upperBound, String userNameA, String userNameB) {
 		int playerA = -1;
 		int playerB = -1;
 		for (int i = 0; i < users.size(); i++) {
@@ -284,8 +292,9 @@ public class Nimsys {
 			}
 		}
 		if (playerA != -1 && playerB != -1) {
-			NumGame newGame = new NumGame(initialNumber, upperBound, users.get(playerA), users.get(playerB));
-			int winner = newGame.startGame();
+			NimGame newGame = new NimGame(initialNumber, upperBound, users.get(playerA), users.get(playerB));
+			System.out.println();
+			int winner = newGame.startGame(scanner);
 			int temp = 0;
 			temp = users.get(playerA).getNumberOfPlayed();
 			users.get(playerA).setNumberOfPlayed(temp + 1);

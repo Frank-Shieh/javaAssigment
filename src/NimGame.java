@@ -7,24 +7,21 @@ import java.util.Scanner;
 /**
  * @author ZIYANG XIE StudentID 870523 9 Apr. 2018-4:35:44 pm
  */
-public class NumGame {
+public class NimGame {
 	int upperBound;
 	int numberOfStones;
 	private NimPlayer playerA;
 	private NimPlayer playerB;
 	String winner;
 
-	public NumGame(int initialStones, int upperBound, NimPlayer playerA, NimPlayer playerB) {
+	public NimGame(int initialStones, int upperBound, NimPlayer playerA, NimPlayer playerB) {
 		this.numberOfStones = initialStones;
 		this.upperBound = upperBound;
 		this.setPlayerA(playerA);
 		this.setPlayerB(playerB);
 	}
 
-	public int startGame() {
-		// initial step
-		System.out.println("Welcome to Nim\n");
-		Scanner scanner = new Scanner(System.in);
+	public int startGame(Scanner scanner) {
 
 		// record initial number
 		System.out.println("Initial stone count: " + this.numberOfStones);
@@ -60,10 +57,10 @@ public class NumGame {
 		// determine the winner
 		System.out.printf("Game Over\n");
 		if (this.numberOfStones == 0 && this.winner == null) {
-			System.out.println(playerA.getGivenName() + " " + playerB.getFamilyName() + " wins!\n");
+			System.out.println(playerA.getGivenName() + " " + playerA.getFamilyName() + " wins!");
 			return 1;
 		} else {
-			System.out.println(this.winner + " wins!\n");
+			System.out.println(this.winner + " wins!");
 			return 2;
 		}
 
@@ -81,7 +78,7 @@ public class NumGame {
 	// determine the valid number to remove
 	public int judgeRemoveNumber(int numberToRemove) {
 		if (numberToRemove <= upperBound && numberToRemove > 0 && numberToRemove <= numberOfStones) {
-//			numberOfStones = numberOfStones - numberToRemove;
+			numberOfStones = numberOfStones - numberToRemove;
 //			if (numberOfStones > 0) {
 //				printStones(numberOfStones);
 //			}
