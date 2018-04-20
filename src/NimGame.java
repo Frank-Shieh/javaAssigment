@@ -28,7 +28,8 @@ public class NimGame {
 		System.out.println("Maximum stone removal: " + this.upperBound);
 		System.out.println("Player 1: " + playerA.getGivenName() + " " + playerA.getFamilyName());
 		System.out.println("Player 2: " + playerB.getGivenName() + " " + playerB.getFamilyName() + "\n");
-
+		winner = null;
+		
 		// game begin
 		while (this.numberOfStones != 0) {
 			// player1's turn
@@ -79,9 +80,6 @@ public class NimGame {
 	public int judgeRemoveNumber(int numberToRemove) {
 		if (numberToRemove <= upperBound && numberToRemove > 0 && numberToRemove <= numberOfStones) {
 			numberOfStones = numberOfStones - numberToRemove;
-//			if (numberOfStones > 0) {
-//				printStones(numberOfStones);
-//			}
 			return 1;
 		} else {
 			System.out.println("Invalid move. You must remove between 1 and " + this.upperBound + " stones.\n");
