@@ -88,21 +88,20 @@ public class Nimsys {
 
 	// insert a new user in to array users
 	public void addPlayer(String userName, String familyName, String givenName) {
-		int flag = 0;
-		// check the same userName in the array
-		for (int i = 0; i <= cursor; i++) {
-			if (users[i] != null && userName.equals(users[i].getUserName()))
-				flag = 1;
-		}
-		// if flag is 0, it does not exist the same userName in the array
-		if (flag == 0) {
-			NimPlayer player = new NimPlayer(userName, givenName, familyName);
-			users[cursor] = player;
-			cursor++;
+		// if the number of users is maximum
+		if (cursor == 99) {
+			System.out.println("The player already full.");
 		} else {
-			System.out.println("The player already exists.");
+			int flag = checkUserName(users, userName);
+			// if flag is 0, it does not exist the same userName in the array
+			if (flag == -1) {
+				NimPlayer player = new NimPlayer(userName, givenName, familyName);
+				users[cursor] = player;
+				cursor++;
+			} else {
+				System.out.println("The player already exists.");
+			}
 		}
-
 	}
 
 	// remove the user from array users
@@ -114,18 +113,19 @@ public class Nimsys {
 			if (flag.equals("y")) {
 				for (int i = 0; i < users.length; i++)
 					users[i] = null;
+				cursor = 0;
+
 			}
 		} else {
-			int flag = 1;
-			// check the same userName in the array
-			for (int i = 0; i <= cursor; i++) {
-				if (users[i] != null && userName.equals(users[i].getUserName())) {
-					users[i] = null;
-					flag = 0;
-				}
-			}
-			if (flag == 1) {
+			int flag = checkUserName(users, userName);
+			if (flag == -1) {
 				System.out.println("The player does not exist.");
+			} else {
+				// rearrange the array
+				for (int i = flag + 1; i <= cursor; i++) {
+					users[i - 1] = users[i];
+				}
+				cursor--;
 			}
 		}
 
@@ -133,18 +133,10 @@ public class Nimsys {
 
 	// modify user information
 	public void editPlayer(String userName, String familyName, String givenName) {
-		int flag = 0;
-		int i = 0;
-		// check the same userName in the array
-		for (i = 0; i <= cursor; i++) {
-			if (users[i] != null && userName.equals(users[i].getUserName())) {
-				flag = 1;
-				break;
-			}
-		}
-		if (flag == 1) {
-			users[i].setFamilyName(familyName);
-			users[i].setGivenName(givenName);
+		int flag = checkUserName(users, userName);
+		if (flag != -1) {
+			users[flag].setFamilyName(familyName);
+			users[flag].setGivenName(givenName);
 		} else {
 			System.out.println("The player does not exist.");
 		}
@@ -157,27 +149,17 @@ public class Nimsys {
 			String flag = scanner.next();
 			if (flag.equals("y")) {
 				for (int i = 0; i <= cursor; i++) {
-					if (users[i] != null) {
-						users[i].setNumberOfPlayed(0);
-						users[i].setNumberOfWon(0);
-					}
+					users[i].setNumberOfPlayed(0);
+					users[i].setNumberOfWon(0);
 				}
 			}
 		} else {
-			int flag = 0;
-			int i;
-			// check the same userName in the array
-			for (i = 0; i <= cursor; i++) {
-				if (users[i] != null && userName.equals(users[i].getUserName())) {
-					flag = 1;
-					break;
-				}
-			}
-			if (flag == 0) {
-				users[i].setNumberOfPlayed(0);
-				users[i].setNumberOfWon(0);
+			int flag = checkUserName(users, userName);
+			if (flag != -1) {
+				users[flag].setNumberOfPlayed(0);
+				users[flag].setNumberOfWon(0);
 			} else {
-				System.out.println("The player already exists.");
+				System.out.println("The player does not exists.");
 			}
 
 		}
@@ -335,5 +317,17 @@ public class Nimsys {
 		} else {
 			System.out.println("One of the players does not exist.");
 		}
+	}
+
+	public static int checkUserName(NimPlayer[] users, String userName) {
+		int flag = -1;
+		// check the same userName in the array
+		for (int i = 0; i < users.length; i++) {
+			if (users[i] != null && userName.equals(users[i].getUserName())) {
+				flag = i;
+				break;
+			}
+		}
+		return flag;
 	}
 }
