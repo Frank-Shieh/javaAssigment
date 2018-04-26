@@ -22,46 +22,43 @@ public class NimGame {
 	}
 
 	public int startGame(Scanner scanner) {
-
+		NimGame nimGame = new NimGame(numberOfStones, upperBound, playerA, playerB);
 		// record initial number
-		System.out.println("Initial stone count: " + this.numberOfStones);
-		System.out.println("Maximum stone removal: " + this.upperBound);
+		System.out.println("Initial stone count: " + nimGame.numberOfStones);
+		System.out.println("Maximum stone removal: " + nimGame.upperBound);
 		System.out.println("Player 1: " + playerA.getGivenName() + " " + playerA.getFamilyName());
 		System.out.println("Player 2: " + playerB.getGivenName() + " " + playerB.getFamilyName() + "\n");
 		winner = null;
-		
+
 		// game begin
-		while (this.numberOfStones != 0) {
+		while (nimGame.numberOfStones != 0) {
 			// player1's turn
-			int numberToRemove = 0;
 			int flag = 0;
 			while (flag == 0) {
-				printStones(this.numberOfStones);
+				printStones(nimGame.numberOfStones);
 				System.out.println(playerA.getGivenName() + "'s turn - remove how many?\n");
-				numberToRemove = playerA.removeStone(scanner);
-				flag = this.judgeRemoveNumber(numberToRemove);
+				flag = playerA.removeStone(scanner, nimGame);
 			}
-			if (this.numberOfStones == 0) {
-				this.winner = playerB.getGivenName() + " " + playerB.getFamilyName();
+			if (nimGame.numberOfStones == 0) {
+				nimGame.winner = playerB.getGivenName() + " " + playerB.getFamilyName();
 				break;
 			}
 			// player2's turn
 			flag = 0;
 			while (flag == 0) {
-				printStones(this.numberOfStones);
+				printStones(nimGame.numberOfStones);
 				System.out.println(playerB.getGivenName() + "'s turn - remove how many?\n");
-				numberToRemove = playerB.removeStone(scanner);
-				flag = this.judgeRemoveNumber(numberToRemove);
+				flag = playerA.removeStone(scanner, nimGame);
 			}
 		}
 
 		// determine the winner
 		System.out.printf("Game Over\n");
-		if (this.numberOfStones == 0 && this.winner == null) {
+		if (nimGame.numberOfStones == 0 && nimGame.winner == null) {
 			System.out.println(playerA.getGivenName() + " " + playerA.getFamilyName() + " wins!");
 			return 1;
 		} else {
-			System.out.println(this.winner + " wins!");
+			System.out.println(nimGame.winner + " wins!");
 			return 2;
 		}
 
@@ -74,17 +71,6 @@ public class NimGame {
 			System.out.printf(" *");
 		}
 		System.out.printf("\n");
-	}
-
-	// determine the valid number to remove
-	public int judgeRemoveNumber(int numberToRemove) {
-		if (numberToRemove <= upperBound && numberToRemove > 0 && numberToRemove <= numberOfStones) {
-			numberOfStones = numberOfStones - numberToRemove;
-			return 1;
-		} else {
-			System.out.println("Invalid move. You must remove between 1 and " + this.upperBound + " stones.\n");
-			return 0;
-		}
 	}
 
 	/**

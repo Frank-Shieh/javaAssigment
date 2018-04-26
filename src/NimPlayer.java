@@ -95,9 +95,23 @@ public class NimPlayer {
 	}
 
 	// get the number to remove
-	public int removeStone(Scanner scanner) {
+	public int removeStone(Scanner scanner, NimGame nimGame) {
 		int numberToRemove = scanner.nextInt();
-		return numberToRemove;
+		int flag = judgeRemoveNumber(nimGame.numberOfStones, nimGame.upperBound, numberToRemove);
+		// if numberToRemove is valid
+		if (flag == 1) {
+			nimGame.numberOfStones = nimGame.numberOfStones - numberToRemove;
+		}
+		return flag;
 	}
 
+	// determine the valid number to remove
+	public int judgeRemoveNumber(int numberOfStones, int upperBound, int numberToRemove) {
+		if (numberToRemove <= upperBound && numberToRemove > 0 && numberToRemove <= numberOfStones) {
+			return 1;
+		} else {
+			System.out.println("Invalid move. You must remove between 1 and " + upperBound + " stones.\n");
+			return 0;
+		}
+	}
 }

@@ -30,6 +30,7 @@ public class Nimsys {
 			flag = nimsys.determineCommand(scanner, command);
 		}
 		System.out.println();
+		 System.exit(0);
 	}
 
 	public int determineCommand(Scanner scanner, String command) {
@@ -174,7 +175,7 @@ public class Nimsys {
 				public int compare(NimPlayer o1, NimPlayer o2) {
 					// TODO Auto-generated method stub
 					if (o1 != null && o2 != null)
-						return o1.getUserName().compareToIgnoreCase(o2.getUserName());
+						return o1.getUserName().compareTo(o2.getUserName());
 					else
 						return 0;
 				}
@@ -220,7 +221,7 @@ public class Nimsys {
 									- o1.getNumberOfWon() / o1.getNumberOfPlayed();
 						} else {
 							// arrange userName if the won percentages are the same.
-							return o1.getUserName().compareToIgnoreCase(o2.getUserName());
+							return o1.getUserName().compareTo(o2.getUserName());
 						}
 
 					} else if (o1.getNumberOfPlayed() != o2.getNumberOfPlayed()) {
@@ -228,7 +229,7 @@ public class Nimsys {
 						return o2.getNumberOfPlayed() - o1.getNumberOfPlayed();
 					} else {
 						// neither users has played games, arrange their userName in alphabetical order
-						return o1.getUserName().compareToIgnoreCase(o2.getUserName());
+						return o1.getUserName().compareTo(o2.getUserName());
 					}
 				} else
 					return 0;
@@ -252,14 +253,14 @@ public class Nimsys {
 										- o2.getNumberOfWon() / o2.getNumberOfPlayed();
 							} else {
 								// arrange userName if the won percentages are the same.
-								return o1.getUserName().compareToIgnoreCase(o2.getUserName());
+								return o1.getUserName().compareTo(o2.getUserName());
 							}
 						} else if (o1.getNumberOfPlayed() != o2.getNumberOfPlayed()) {
 							// arrange user who never play games and the user who played games before
 							return o1.getNumberOfPlayed() - o2.getNumberOfPlayed();
 						} else {
 							// arrange userName if users never played games before
-							return o1.getUserName().compareToIgnoreCase(o2.getUserName());
+							return o1.getUserName().compareTo(o2.getUserName());
 						}
 					} else
 						return 0;
