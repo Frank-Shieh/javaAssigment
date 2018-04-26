@@ -97,10 +97,11 @@ public class NimPlayer {
 	// get the number to remove
 	public int removeStone(Scanner scanner, NimGame nimGame) {
 		int numberToRemove = scanner.nextInt();
-		int flag = judgeRemoveNumber(nimGame.numberOfStones, nimGame.upperBound, numberToRemove);
+		int flag = judgeRemoveNumber(nimGame.getNumberOfStones(), nimGame.getUpperBound(), numberToRemove);
 		// if numberToRemove is valid
 		if (flag == 1) {
-			nimGame.numberOfStones = nimGame.numberOfStones - numberToRemove;
+			int temp = nimGame.getNumberOfStones();
+			nimGame.setNumberOfStones(temp - numberToRemove);
 		}
 		return flag;
 	}
