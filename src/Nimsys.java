@@ -29,8 +29,7 @@ public class Nimsys {
 			// if command is exit, flag will be 0.Otherwise, it will be 1.
 			flag = nimsys.determineCommand(scanner, command);
 		}
-		System.out.println();
-		 System.exit(0);
+		nimsys.exit();
 	}
 
 	public int determineCommand(Scanner scanner, String command) {
@@ -330,5 +329,11 @@ public class Nimsys {
 			}
 		}
 		return flag;
+	}
+
+	public void exit() {
+		// TODO Auto-generated method stub
+		System.out.println();
+		System.exit(0);
 	}
 }
