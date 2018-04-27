@@ -214,21 +214,18 @@ public class Nimsys {
 					// both users have played some games
 					if (o1.getNumberOfPlayed() != 0 && o2.getNumberOfPlayed() != 0) {
 						// arrange won percentage first
-						if ((o1.getNumberOfWon() / o1.getNumberOfPlayed()) != (o2.getNumberOfWon()
-								/ o2.getNumberOfPlayed())) {
-							return o2.getNumberOfWon() / o2.getNumberOfPlayed()
-									- o1.getNumberOfWon() / o1.getNumberOfPlayed();
-						} else {
-							// arrange userName if the won percentages are the same.
+						int temp = Double.compare(1.0 * o2.getNumberOfWon() / o2.getNumberOfPlayed(),
+								1.0 * o1.getNumberOfWon() / o1.getNumberOfPlayed());
+						if (temp == 0)
 							return o1.getUserName().compareTo(o2.getUserName());
-						}
-
+						else
+							return temp;
 					} else if (o1.getNumberOfPlayed() != o2.getNumberOfPlayed()) {
 						// list the user who has played games before
 						return o2.getNumberOfPlayed() - o1.getNumberOfPlayed();
 					} else {
 						// neither users has played games, arrange their userName in alphabetical order
-						return o2.getUserName().compareTo(o1.getUserName());
+						return o1.getUserName().compareTo(o2.getUserName());
 					}
 				} else
 					return 0;
@@ -244,22 +241,22 @@ public class Nimsys {
 				@Override
 				public int compare(NimPlayer o1, NimPlayer o2) {
 					if (o1 != null && o2 != null) {
+						// both users have played some games
 						if (o1.getNumberOfPlayed() != 0 && o2.getNumberOfPlayed() != 0) {
 							// arrange won percentage first
-							if ((o1.getNumberOfWon() / o1.getNumberOfPlayed()) != (o2.getNumberOfWon()
-									/ o2.getNumberOfPlayed())) {
-								return o1.getNumberOfWon() / o1.getNumberOfPlayed()
-										- o2.getNumberOfWon() / o2.getNumberOfPlayed();
-							} else {
+							int temp = Double.compare(1.0 * o1.getNumberOfWon() / o1.getNumberOfPlayed(),
+									1.0 * o2.getNumberOfWon() / o2.getNumberOfPlayed());
+							if (temp == 0)
 								// arrange userName if the won percentages are the same.
 								return o1.getUserName().compareTo(o2.getUserName());
-							}
+							else
+								return temp;
 						} else if (o1.getNumberOfPlayed() != o2.getNumberOfPlayed()) {
 							// arrange user who never play games and the user who played games before
 							return o1.getNumberOfPlayed() - o2.getNumberOfPlayed();
 						} else {
 							// arrange userName if users never played games before
-							return o2.getUserName().compareTo(o1.getUserName());
+							return o1.getUserName().compareTo(o2.getUserName());
 						}
 					} else
 						return 0;
