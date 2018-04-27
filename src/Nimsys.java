@@ -224,11 +224,11 @@ public class Nimsys {
 						}
 
 					} else if (o1.getNumberOfPlayed() != o2.getNumberOfPlayed()) {
-						// list the user who has played games first
+						// list the user who has played games before
 						return o2.getNumberOfPlayed() - o1.getNumberOfPlayed();
 					} else {
 						// neither users has played games, arrange their userName in alphabetical order
-						return o1.getUserName().compareTo(o2.getUserName());
+						return o2.getUserName().compareTo(o1.getUserName());
 					}
 				} else
 					return 0;
@@ -259,7 +259,7 @@ public class Nimsys {
 							return o1.getNumberOfPlayed() - o2.getNumberOfPlayed();
 						} else {
 							// arrange userName if users never played games before
-							return o1.getUserName().compareTo(o2.getUserName());
+							return o2.getUserName().compareTo(o1.getUserName());
 						}
 					} else
 						return 0;
@@ -273,17 +273,19 @@ public class Nimsys {
 
 	// output the ranking list
 	public void printRankings(NimPlayer[] users, String parameter) {
-		double wonPercentage = 0;
+		double wonPercentage;
 		for (int i = 0; i <= cursor && i < 10; i++) {
+			wonPercentage = 0;
 			if (users[i] != null) {
 				if (users[i].getNumberOfPlayed() != 0) {
-					wonPercentage = users[i].getNumberOfWon() / users[i].getNumberOfPlayed();
+					wonPercentage = 1.0 * users[i].getNumberOfWon() / users[i].getNumberOfPlayed();
 				}
 				String result = Integer.parseInt(new DecimalFormat("0").format(wonPercentage * 100)) + "%";
 				System.out.printf("%-5s" + "| ", result);
 				System.out.printf("%02d" + " games | ", users[i].getNumberOfPlayed());
 				System.out.println(users[i].getGivenName() + " " + users[i].getFamilyName());
 			}
+
 		}
 	}
 
